@@ -130,6 +130,7 @@ public class ServicioMetodoHungaro {
        
         try {
             mostrarMatriz(this.matrizAsignacion);
+           
         } catch(Exception e) {
             JOptionPane.showMessageDialog(null,"Ocurrió un error, vuelve a intentarlo.","Error",JOptionPane.ERROR_MESSAGE);
         }
@@ -211,19 +212,52 @@ public class ServicioMetodoHungaro {
 
         JOptionPane.showMessageDialog(null, panel, "Método Húngaro",
             JOptionPane.INFORMATION_MESSAGE);
+        
+         System.out.println("Menores  de fila");
+         
+         for(int i=0; i<buscarMinimoPorFila(this.matrizAsignacion).length; i++){
+             System.out.println("Fila " + (i+1) + " " + buscarMinimoPorFila(this.matrizAsignacion)[i]);
+         }
+         
+         System.out.println("Minimo de columna");
+         
+         for(int i=0; i<buscarMinimoPorColumna(this.matrizAsignacion).length; i++){
+             System.out.println("Columna " + (i+1) + " " + buscarMinimoPorColumna(this.matrizAsignacion)[i]);
+         }
    }
     
-   public int[] buscarMinimoDeFila(int[][] matriz) {
+   public int[] buscarMinimoPorFila(int[][] matriz) {
        int[] minimoPorFila = new int[this.cantidadTrabajadores];
-       /*ArrayList<int> listaNumeros = new ArrayList<int>();
-       for(int i = 0; i<this.cantidadTrabajadores; i++){
-           for(int j =0; j<this.cantidadPuestos; j++){
-               listaNumeros[j] = matriz[i][j];
-           }
-           
-           listaNumeros.
-       }*/
+       int menorTemporal = 0;
+       
+        for(int i=0; i<this.cantidadTrabajadores; i++){
+            menorTemporal = matriz[i][0];
+            for(int j=0; j<this.cantidadPuestos;j++){
+                if(matriz[i][j] < menorTemporal) {
+                    menorTemporal = matriz[i][j];
+                }
+            }
+            minimoPorFila[i] = menorTemporal;
+        }
+       
       return minimoPorFila;
+   }
+   
+   public int[] buscarMinimoPorColumna(int[][] matriz) {
+       int[] minimoPorColumna = new int[this.cantidadTrabajadores];
+       int minimoTemporal = 0;
+       
+        for(int i=0; i<this.cantidadPuestos; i++){
+            minimoTemporal = matriz[0][i];
+            for(int j=0; j<this.cantidadTrabajadores;j++){
+                if(matriz[j][i] < minimoTemporal) {
+                    minimoTemporal = matriz[j][i];
+                }
+            }
+            minimoPorColumna[i] = minimoTemporal;
+        }
+       
+      return minimoPorColumna;
    }
 }   
 
