@@ -71,11 +71,16 @@ public class ServicioMetodoHungaro {
     }
     
     private void ingresarNumeroFilas(){
-        
+       
         String cantidadFilas = (JOptionPane.showInputDialog(null,"Ingrese el número de trabajadores:","Cantidad de trabajadores",JOptionPane.INFORMATION_MESSAGE,null,null,"")).toString();
           
           if(Utilidades.validarNumero(cantidadFilas)){
-            this.cantidadPuestos = Integer.parseInt(cantidadFilas);
+            if(Integer.parseInt(cantidadFilas) > 1){
+                this.cantidadTrabajadores = Integer.parseInt(cantidadFilas);
+            } else {
+                JOptionPane.showMessageDialog(null,"Debe de ingresar un número mayor a 1.","Error",JOptionPane.ERROR_MESSAGE);
+                ingresarNumeroFilas();
+            }   
         } else {
             JOptionPane.showMessageDialog(null,"Debe de ingresar un número.","Error",JOptionPane.ERROR_MESSAGE);
             ingresarNumeroFilas();
@@ -87,7 +92,12 @@ public class ServicioMetodoHungaro {
         String cantidadColumnas = (JOptionPane.showInputDialog(null,"Ingrese el número de puestos:","Cantidad de puestos",JOptionPane.INFORMATION_MESSAGE,null,null,"")).toString();
           
         if(Utilidades.validarNumero(cantidadColumnas)){
-              this.cantidadTrabajadores = Integer.parseInt(cantidadColumnas);
+            if(Integer.parseInt(cantidadColumnas) > 1){
+                this.cantidadPuestos = Integer.parseInt(cantidadColumnas);
+            } else {
+                JOptionPane.showMessageDialog(null,"Debe de ingresar un número mayor a 1.","Error",JOptionPane.ERROR_MESSAGE);
+                ingresarNumeroColumnas();
+            }   
         } else {
               JOptionPane.showMessageDialog(null,"Debe de ingresar un número.","Error",JOptionPane.ERROR_MESSAGE);
               ingresarNumeroColumnas();
@@ -96,7 +106,7 @@ public class ServicioMetodoHungaro {
     }
     
     public void creacionDeMatrizDeAsignacion(){
-        balancearMatriz();
+        this.matrizAsignacion = new int[this.cantidadTrabajadores][this.cantidadPuestos];
         boolean esValido = false;
       
         for(int i=0; i<this.cantidadTrabajadores; i++){
@@ -122,12 +132,6 @@ public class ServicioMetodoHungaro {
             }
         }
         
-        if(this.cantidadTrabajadores > this.cantidadPuestos){
-            balancearPuestos();
-        } else if (this.cantidadTrabajadores < this.cantidadPuestos) {
-            balancearTrabajadores();
-        }
-       
         try {
             mostrarMatriz(this.matrizAsignacion);
            
@@ -135,36 +139,6 @@ public class ServicioMetodoHungaro {
             JOptionPane.showMessageDialog(null,"Ocurrió un error, vuelve a intentarlo.","Error",JOptionPane.ERROR_MESSAGE);
         }
     } 
-    
-    public void balancearMatriz(){
-        int cantidadTrabajadoresBalanceados = 0;
-        int cantidadPuestosBalanceados = 0;
-        
-        if(this.cantidadTrabajadores == this.cantidadPuestos) {
-            cantidadTrabajadoresBalanceados = this.cantidadTrabajadores;
-            cantidadPuestosBalanceados = this.cantidadPuestos;
-        } else if (this.cantidadTrabajadores > this.cantidadPuestos) {
-            cantidadTrabajadoresBalanceados = this.cantidadTrabajadores;
-            cantidadPuestosBalanceados = this.cantidadPuestos + (this.cantidadTrabajadores - this.cantidadPuestos);
-        } else {
-            cantidadTrabajadoresBalanceados = this.cantidadTrabajadores + (this.cantidadPuestos - this.cantidadTrabajadores);
-            cantidadPuestosBalanceados = this.cantidadPuestos;
-        }
-        
-        this.matrizAsignacion = new int[cantidadTrabajadoresBalanceados][cantidadPuestosBalanceados];
-    }
-    
-    public void balancearTrabajadores(){
-        for(int i=0;i<this.cantidadPuestos; i++){
-          this.matrizAsignacion[this.cantidadPuestos][i] = 0;
-        }
-    }
-    
-    public void balancearPuestos(){
-        for(int i=0;i<this.cantidadTrabajadores; i++){
-            this.matrizAsignacion[i][this.cantidadTrabajadores] = 0;
-        }
-    }
     
     public void mostrarMatriz(int[][] matriz) {
         String columnas[] = new String[this.cantidadPuestos+1];
@@ -208,7 +182,7 @@ public class ServicioMetodoHungaro {
      
         JScrollPane panel = new JScrollPane();
         panel.setViewportView(tablaDeDatos);
-        panel.setPreferredSize(new Dimension(cantidadTrabajadores * 150,cantidadPuestos * 40));
+        panel.setPreferredSize(new Dimension(cantidadTrabajadores * 200,cantidadPuestos * 55));
 
         JOptionPane.showMessageDialog(null, panel, "Método Húngaro",
             JOptionPane.INFORMATION_MESSAGE);
@@ -225,6 +199,7 @@ public class ServicioMetodoHungaro {
              System.out.println("Columna " + (i+1) + " " + buscarMinimoPorColumna(this.matrizAsignacion)[i]);
          }
    }
+    
     
    public int[] buscarMinimoPorFila(int[][] matriz) {
        int[] minimoPorFila = new int[this.cantidadTrabajadores];
@@ -244,7 +219,7 @@ public class ServicioMetodoHungaro {
    }
    
    public int[] buscarMinimoPorColumna(int[][] matriz) {
-       int[] minimoPorColumna = new int[this.cantidadTrabajadores];
+       int[] minimoPorColumna = new int[this.cantidadPuestos];
        int minimoTemporal = 0;
        
         for(int i=0; i<this.cantidadPuestos; i++){
