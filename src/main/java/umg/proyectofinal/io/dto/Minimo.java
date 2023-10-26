@@ -1,4 +1,4 @@
-package umg.dto;
+package umg.proyectofinal.io.dto;
 
 public class Minimo {
     private Integer i;
