@@ -20,28 +20,27 @@ public class ServicioMetodoHungaro {
     }
 
     public void mostrarMenu() {
-        boolean noEsValido = false;
-
+        boolean noEsValido = true;
         do {
-            var opcion = (JOptionPane.showInputDialog(null,
+
+            String opcion = (JOptionPane.showInputDialog(null,
                     """
                             Menú Principal\s
-                             1. Método Húngaro\s
+                            1. Método Húngaro\s
                             """
-                    , "Investigación de operaciones",
-                    JOptionPane.INFORMATION_MESSAGE, null, null, "")).toString();
+                    ,"Investigación de operaciones",
+                    JOptionPane.INFORMATION_MESSAGE,null,null,"")).toString();
 
-            if (Utilidades.validarNumero(opcion)) {
-                if (Integer.parseInt(opcion) == 1) {
+            if(Utilidades.validarNumero(opcion)){
+                if(Integer.parseInt(opcion) == 1){
                     ingresarValoresDeMatriz();
                     noEsValido = false;
-                    continue;
+                } else {
+                    JOptionPane.showMessageDialog(null,"Debe de ingresar una opción válida.","Error",JOptionPane.ERROR_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(null, "Debe de ingresar una opción válida.", "Error", JOptionPane.ERROR_MESSAGE);
-                continue;
+            } else {
+                JOptionPane.showMessageDialog(null,"Debe de ingresar un número.","Error",JOptionPane.ERROR_MESSAGE);
             }
-            JOptionPane.showMessageDialog(null, "Debe de ingresar un número.", "Error", JOptionPane.ERROR_MESSAGE);
-            noEsValido = true;
         } while (noEsValido);
     }
 
