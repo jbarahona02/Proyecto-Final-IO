@@ -83,23 +83,23 @@ public class MetodoHungaro {
 
 
     private void marcar(int fila, int col, int maxVH) {
-        if (lineas[fila][col] == 2) // if cell is colored twice before (intersection cell), don't color it again
+        if (lineas[fila][col] == 2)
             return;
 
-        if (maxVH > 0 && lineas[fila][col] == 1) // if cell colored vertically and needs to be recolored vertically, don't color it again (Allowing this step, will color the same line (result won't change), but the num of line will be incremented (wrong value for the num of line drawn))
+        if (maxVH > 0 && lineas[fila][col] == 1)
             return;
 
-        if (maxVH <= 0 && lineas[fila][col] == -1) // if cell colored horizontally and needs to be recolored horizontally, don't color it again (Allowing this step, will color the same line (result won't change), but the num of line will be incremented (wrong value for the num of line drawn))
+        if (maxVH <= 0 && lineas[fila][col] == -1)
             return;
 
-        for (int i = 0; i < valores.length; i++) { // Loop on cell at indexes [fila][col] and its neighbors
-            if (maxVH > 0)    // if value of maxVH is positive, color vertically
-                lineas[i][col] = lineas[i][col] == -1 || lineas[i][col] == 2 ? 2 : 1; // if cell was colored before as horizontal (-1), and now needs to be colored vertical (1), so this cell is an intersection (2). Else if this value was not colored before, color it vertically
-            else            // if value of maxVH is zero or negative color horizontally
-                lineas[fila][i] = lineas[fila][i] == 1 || lineas[fila][i] == 2 ? 2 : -1; // if cell was colored before as vertical (1), and now needs to be colored horizontal (-1), so this cell is an intersection (2). Else if this value was not colored before, color it horizontally
+        for (int i = 0; i < valores.length; i++) {
+            if (maxVH > 0)
+                lineas[i][col] = lineas[i][col] == -1 || lineas[i][col] == 2 ? 2 : 1;
+            else
+                lineas[fila][i] = lineas[fila][i] == 1 || lineas[fila][i] == 2 ? 2 : -1;
         }
 
-        // increment line number
+
         numeroLineas++;
     }
     public void agregarCerosAdicionales() {
@@ -114,28 +114,28 @@ public class MetodoHungaro {
 
         for (int fila = 0; fila < valores.length; fila++) {
             for (int col = 0; col < valores.length; col++) {
-                if (lineas[fila][col] == 0) // If uncovered, subtract
+                if (lineas[fila][col] == 0)
                     valores[fila][col] -= valorMinimoNoCubierto;
 
-                else if (lineas[fila][col] == 2) // If covered twice, add
+                else if (lineas[fila][col] == 2)
                     valores[fila][col] += valorMinimoNoCubierto;
             }
         }
     }
     private boolean optimizacion(int fila) {
-        if (fila == filas.length) // If all rows were assigned a cell
+        if (fila == filas.length)
             return true;
 
-        for (int col = 0; col < valores.length; col++) { // Try all columns
-            if (valores[fila][col] == 0 && columnasOcupadas[col] == 0) { // If the current cell at column `col` has a value of zero, and the column is not reserved by a previous fila
-                filas[fila] = col; // Assign the current fila the current column cell
-                columnasOcupadas[col] = 1; // Mark the column as reserved
-                if (optimizacion(fila + 1)) // If the next rows were assigned successfully a cell from a unique column, return true
+        for (int col = 0; col < valores.length; col++) {
+            if (valores[fila][col] == 0 && columnasOcupadas[col] == 0) {
+                filas[fila] = col;
+                columnasOcupadas[col] = 1;
+                if (optimizacion(fila + 1))
                     return true;
-                columnasOcupadas[col] = 0; // If the next rows were not able to get a cell, go back and try for the previous rows another cell from another column
+                columnasOcupadas[col] = 0;
             }
         }
-        return false; // If no cell were assigned for the current fila, return false to go back one fila to try to assign to it another cell from another column
+        return false;
     }
 
 
