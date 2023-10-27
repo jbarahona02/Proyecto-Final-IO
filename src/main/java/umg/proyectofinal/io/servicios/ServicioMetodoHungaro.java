@@ -58,6 +58,7 @@ public class ServicioMetodoHungaro {
         var xy = String.valueOf(valor);
 
         if (!Utilidades.validarNumero(xy)) {
+            JOptionPane.showMessageDialog(null,"Debe de ingresar un número.","Error",JOptionPane.ERROR_MESSAGE);
             ingresarNumeroFilasYColumnas();
         }
 
