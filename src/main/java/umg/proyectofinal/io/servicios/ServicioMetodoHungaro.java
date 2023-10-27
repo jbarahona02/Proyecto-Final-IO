@@ -54,12 +54,12 @@ public class ServicioMetodoHungaro {
     }
 
     private void ingresarNumeroFilasYColumnas() {
-        String cantidadFilas = (JOptionPane.showInputDialog(null, "Ingrese el número de trabajadores y puestos: ", "Cantidad de trabajadores y puestos ", JOptionPane.INFORMATION_MESSAGE, null, null, "")).toString();
+        String xy = (JOptionPane.showInputDialog(null, "Ingrese el número de trabajadores y puestos: ", "Cantidad de trabajadores y puestos ", JOptionPane.INFORMATION_MESSAGE, null, null, "")).toString();
 
-        if (Utilidades.validarNumero(cantidadFilas)) {
-            if (Integer.parseInt(cantidadFilas) > 1) {
-                this.cantidadPuestos = Integer.parseInt(cantidadFilas);
-                this.cantidadTrabajadores = Integer.parseInt(cantidadFilas);
+        if (Utilidades.validarNumero(xy)) {
+            if (Integer.parseInt(xy) > 1) {
+                this.cantidadPuestos = Integer.parseInt(xy);
+                this.cantidadTrabajadores = Integer.parseInt(xy);
             } else {
                 JOptionPane.showMessageDialog(null, "Debe de ingresar un número mayor a 1.", "Error", JOptionPane.ERROR_MESSAGE);
                 ingresarNumeroFilasYColumnas();
@@ -166,7 +166,7 @@ public class ServicioMetodoHungaro {
         for (int i = 0; i < resultados.length; i++) {
             resultado.append(String.format("Trabajador %d => Puesto %d => Costo (%d)%n", i + 1, resultados[i] + 1, matrizAsignacion[i][resultados[i]]));
         }
-        resultado.append(String.format("\nTotal: %d%n", total)); // Total
+        resultado.append(String.format("\nCosto total optimizado es: %d%n", total)); // Total
         JOptionPane.showMessageDialog(null, resultado.toString());
     }
 
