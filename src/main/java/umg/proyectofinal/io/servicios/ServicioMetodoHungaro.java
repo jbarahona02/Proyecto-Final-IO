@@ -54,22 +54,20 @@ public class ServicioMetodoHungaro {
     }
 
     private void ingresarNumeroFilasYColumnas() {
-        var valor = JOptionPane.showInputDialog(null, "Ingrese el número de trabajadores y tareas: ", "Cantidad de trabajadores y tareas", JOptionPane.INFORMATION_MESSAGE, null, null, "");
-        var xy = String.valueOf(valor);
+        String cantidadFilas = (JOptionPane.showInputDialog(null, "Ingrese el número de trabajadores y puestos: ", "Cantidad de trabajadores y puestos ", JOptionPane.INFORMATION_MESSAGE, null, null, "")).toString();
 
-        if (!Utilidades.validarNumero(xy)) {
-            JOptionPane.showMessageDialog(null,"Debe de ingresar un número.","Error",JOptionPane.ERROR_MESSAGE);
+        if (Utilidades.validarNumero(cantidadFilas)) {
+            if (Integer.parseInt(cantidadFilas) > 1) {
+                this.cantidadPuestos = Integer.parseInt(cantidadFilas);
+                this.cantidadTrabajadores = Integer.parseInt(cantidadFilas);
+            } else {
+                JOptionPane.showMessageDialog(null, "Debe de ingresar un número mayor a 1.", "Error", JOptionPane.ERROR_MESSAGE);
+                ingresarNumeroFilasYColumnas();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe de ingresar un número.", "Error", JOptionPane.ERROR_MESSAGE);
             ingresarNumeroFilasYColumnas();
         }
-
-        var valorEntero = Integer.parseInt(xy);
-        if (valorEntero <= 1) {
-            JOptionPane.showMessageDialog(null, "Debe de ingresar un número mayor a 1.", "Error", JOptionPane.ERROR_MESSAGE);
-            ingresarNumeroFilasYColumnas();
-        }
-
-        this.cantidadTrabajadores = valorEntero;
-        this.cantidadPuestos = valorEntero;
     }
 
     private void creacionDeMatrizDeAsignacion() {
@@ -166,7 +164,7 @@ public class ServicioMetodoHungaro {
     private void mostrarResultado(int[] resultados, int total) {
         StringBuilder resultado = new StringBuilder("Asignación óptima:\n");
         for (int i = 0; i < resultados.length; i++) {
-            resultado.append(String.format("Trabajador %d => Puesto %d (%d)%n", i + 1, resultados[i] + 1, matrizAsignacion[i][resultados[i]]));
+            resultado.append(String.format("Trabajador %d => Puesto %d => Costo (%d)%n", i + 1, resultados[i] + 1, matrizAsignacion[i][resultados[i]]));
         }
         resultado.append(String.format("\nTotal: %d%n", total)); // Total
         JOptionPane.showMessageDialog(null, resultado.toString());
